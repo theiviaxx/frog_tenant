@@ -1,0 +1,8 @@
+<ul class="nav">
+    <li *ngFor="let tenant of tenants$ | async" class="nav-item" [class.active]="activetenant?.id == tenant.id">
+        <a class="nav-link" (click)="setCurrent(tenant)">
+            <i class="material-icons">home</i>
+            <p>{{tenant.domain}}</p>
+        </a>
+    </li>
+</ul>

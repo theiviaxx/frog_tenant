@@ -1,0 +1,15 @@
+/* mat-form-field { width: 100%; }
+.row:first-child { margin-bottom: 12px; } */
+
+.example-container {
+  position: absolute;
+  top: 60px;
+  bottom: 60px;
+  left: 0;
+  right: 0;
+}
+
+.example-sidenav {
+  display: flex;
+  min-width: 300px;
+}
