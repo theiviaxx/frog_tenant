@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 
 import { Observable } from 'rxjs';
 
 import { Tenant, TenantService } from '../tenant.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
     selector: 'tenant-list',
@@ -12,29 +13,23 @@ import { Tenant, TenantService } from '../tenant.service';
 })
 export class TenantListComponent implements OnInit {
     public tenants$: Observable<Tenant[]>;
-    public activetenant: Tenant;
+    public activetenant$: Observable<Tenant>;
 
-    // public form: FormGroup;
+    constructor(private tenantservice: TenantService) {
 
-    constructor(private tenantservice: TenantService, private fb: FormBuilder) {
-
-        // this.form = fb.group({
-        //     name: ['', Validators.required],
-        //     domain: ['', Validators.required]
-        // });
     }
 
     ngOnInit() {
         this.tenants$ = this.tenantservice.tenants;
-    }
-
-    create() {
-        // let value = this.form.value;
-        // this.tenantservice.create(value.name, value.domain);
+        this.activetenant$ = this.tenantservice.tenant;
     }
 
     setCurrent(tenant: Tenant) {
+        if (tenant === null) {
+            tenant = new Tenant();
+            tenant.id = 0;
+        }
         this.tenantservice.setCurrent(tenant);
-        this.activetenant = tenant;
+        // this.activetenant = tenant;
     }
 }

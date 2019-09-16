@@ -1,0 +1,31 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header card-header-success">
+                        <h4 class="card-title">Add Tenant</h4>
+                        <p class="card-category">Add a new Frog tenant</p>
+                    </div>
+                    <div class="card-body">
+                        <form [formGroup]="form">
+                            <div class="row">
+                                <mat-form-field class="example-full-width">
+                                    <input matInput placeholder="Domain" formControlName="domain">
+                                </mat-form-field>
+                            </div>
+                            <mat-spinner-button (btnClick)="create()" [options]="options">Submit</mat-spinner-button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card card-profile">
+                    <div class="card-body">
+                        <pre>Output goes here...</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

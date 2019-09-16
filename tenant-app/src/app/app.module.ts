@@ -5,16 +5,19 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatCardModule, MatListModule, MatInputModule, MatButtonModule, MatDividerModule, MatSidenavModule, MatIconModule } from '@angular/material';
+import { MatProgressButtonsModule } from 'mat-progress-buttons';
 
 import { AppComponent } from './app.component';
 import { TenantComponent } from './tenant/tenant.component';
 import { TenantListComponent } from './tenant-list/tenant-list.component';
+import { AddTenantComponent } from './add-tenant/add-tenant.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         TenantComponent,
-        TenantListComponent
+        TenantListComponent,
+        AddTenantComponent
     ],
     imports: [
         BrowserModule,
@@ -31,6 +34,8 @@ import { TenantListComponent } from './tenant-list/tenant-list.component';
         MatSidenavModule,
         MatListModule,
         MatIconModule,
+
+        MatProgressButtonsModule
     ],
     providers: [],
     bootstrap: [AppComponent]

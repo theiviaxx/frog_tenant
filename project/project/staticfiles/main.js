@@ -23,6 +23,109 @@ webpackEmptyAsyncContext.id = "./src/$$_lazy_route_resource lazy recursive";
 
 /***/ }),
 
+/***/ "./src/app/add-tenant/add-tenant.component.css":
+/*!*****************************************************!*\
+  !*** ./src/app/add-tenant/add-tenant.component.css ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ""
+
+/***/ }),
+
+/***/ "./src/app/add-tenant/add-tenant.component.html":
+/*!******************************************************!*\
+  !*** ./src/app/add-tenant/add-tenant.component.html ***!
+  \******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"main-content\">\n    <div class=\"container-fluid\">\n        <div class=\"row\">\n            <div class=\"col-md-4\">\n                <div class=\"card\">\n                    <div class=\"card-header card-header-success\">\n                        <h4 class=\"card-title\">Add Tenant</h4>\n                        <p class=\"card-category\">Add a new Frog tenant</p>\n                    </div>\n                    <div class=\"card-body\">\n                        <form [formGroup]=\"form\">\n                            <div class=\"row\">\n                                <mat-form-field class=\"example-full-width\">\n                                    <input matInput placeholder=\"Domain\" formControlName=\"domain\">\n                                </mat-form-field>\n                            </div>\n                            <mat-spinner-button (btnClick)=\"create()\" [options]=\"options\">Submit</mat-spinner-button>\n                        </form>\n                    </div>\n                </div>\n            </div>\n            <div class=\"col-md-8\">\n                <div class=\"card card-profile\">\n                    <div class=\"card-body\">\n                        <pre>Output goes here...</pre>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>"
+
+/***/ }),
+
+/***/ "./src/app/add-tenant/add-tenant.component.ts":
+/*!****************************************************!*\
+  !*** ./src/app/add-tenant/add-tenant.component.ts ***!
+  \****************************************************/
+/*! exports provided: AddTenantComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AddTenantComponent", function() { return AddTenantComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var _tenant_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../tenant.service */ "./src/app/tenant.service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var AddTenantComponent = /** @class */ (function () {
+    function AddTenantComponent(tenantservice, fb) {
+        this.tenantservice = tenantservice;
+        this.fb = fb;
+        this.options = {
+            active: false,
+            text: 'Submit',
+            spinnerSize: 19,
+            raised: true,
+            stroked: true,
+            buttonColor: 'primary',
+            spinnerColor: 'accent',
+            fullWidth: false,
+            disabled: false,
+            mode: 'indeterminate',
+        };
+        this.subs = [];
+        this.form = fb.group({
+            name: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required],
+            domain: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required]
+        });
+    }
+    AddTenantComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        var sub = this.tenantservice.created
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["filter"])(function (tenant) { return tenant.domain === _this.form.value.domain; }))
+            .subscribe(function (tenant) {
+            _this.options.active = false;
+        });
+        this.subs.push(sub);
+    };
+    AddTenantComponent.prototype.ngOnDestroy = function () {
+        this.subs.forEach(function (sub) { return sub.unsubscribe(); });
+    };
+    AddTenantComponent.prototype.create = function () {
+        var value = this.form.value;
+        this.options.active = true;
+        this.tenantservice.create(value.domain);
+    };
+    AddTenantComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'add-tenant',
+            template: __webpack_require__(/*! ./add-tenant.component.html */ "./src/app/add-tenant/add-tenant.component.html"),
+            styles: [__webpack_require__(/*! ./add-tenant.component.css */ "./src/app/add-tenant/add-tenant.component.css")]
+        }),
+        __metadata("design:paramtypes", [_tenant_service__WEBPACK_IMPORTED_MODULE_3__["TenantService"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormBuilder"]])
+    ], AddTenantComponent);
+    return AddTenantComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/app.component.css":
 /*!***********************************!*\
   !*** ./src/app/app.component.css ***!
@@ -41,7 +144,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"wrapper\">\n    <div class=\"sidebar\" data-color=\"danger\" data-background-color=\"white\">\n        <div class=\"logo\">\n            <a href=\"/\" class=\"simple-text\">\n                Frog Tenants\n            </a>\n        </div>\n        <div class=\"sidebar-wrapper\">\n            <tenant-list></tenant-list>\n        </div>\n    </div>\n    <div class=\"main-panel\">\n        <tenant></tenant>\n    </div>\n</div>"
+module.exports = "<div class=\"wrapper\">\n    <div class=\"sidebar\" data-color=\"danger\" data-background-color=\"white\">\n        <div class=\"logo\">\n            <a href=\"/\" class=\"simple-text\">\n                Frog Tenants\n            </a>\n        </div>\n        <div class=\"sidebar-wrapper\">\n            <tenant-list></tenant-list>\n        </div>\n    </div>\n    <div class=\"main-panel\">\n        <div *ngIf=\"tenant$ | async as tenant\">\n            <add-tenant *ngIf=\"tenant.id === 0\"></add-tenant>\n            <tenant *ngIf=\"tenant.id !== 0\" [tenant]=\"tenant\"></tenant>\n        </div>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -56,23 +159,33 @@ module.exports = "<div class=\"wrapper\">\n    <div class=\"sidebar\" data-color
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppComponent", function() { return AppComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _tenant_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tenant.service */ "./src/app/tenant.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
 
 var AppComponent = /** @class */ (function () {
-    function AppComponent() {
+    function AppComponent(tenantservice) {
+        this.tenantservice = tenantservice;
         this.title = 'tenant-app';
     }
+    AppComponent.prototype.ngOnInit = function () {
+        this.tenant$ = this.tenantservice.tenant;
+    };
     AppComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-root',
             template: __webpack_require__(/*! ./app.component.html */ "./src/app/app.component.html"),
             styles: [__webpack_require__(/*! ./app.component.css */ "./src/app/app.component.css")]
-        })
+        }),
+        __metadata("design:paramtypes", [_tenant_service__WEBPACK_IMPORTED_MODULE_1__["TenantService"]])
     ], AppComponent);
     return AppComponent;
 }());
@@ -97,9 +210,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
 /* harmony import */ var _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/platform-browser/animations */ "./node_modules/@angular/platform-browser/fesm5/animations.js");
 /* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
-/* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./app.component */ "./src/app/app.component.ts");
-/* harmony import */ var _tenant_tenant_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./tenant/tenant.component */ "./src/app/tenant/tenant.component.ts");
-/* harmony import */ var _tenant_list_tenant_list_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./tenant-list/tenant-list.component */ "./src/app/tenant-list/tenant-list.component.ts");
+/* harmony import */ var mat_progress_buttons__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! mat-progress-buttons */ "./node_modules/mat-progress-buttons/esm5/mat-progress-buttons.es5.js");
+/* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./app.component */ "./src/app/app.component.ts");
+/* harmony import */ var _tenant_tenant_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./tenant/tenant.component */ "./src/app/tenant/tenant.component.ts");
+/* harmony import */ var _tenant_list_tenant_list_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./tenant-list/tenant-list.component */ "./src/app/tenant-list/tenant-list.component.ts");
+/* harmony import */ var _add_tenant_add_tenant_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./add-tenant/add-tenant.component */ "./src/app/add-tenant/add-tenant.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -115,15 +230,18 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 
 
 
+
+
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
     AppModule = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
             declarations: [
-                _app_component__WEBPACK_IMPORTED_MODULE_6__["AppComponent"],
-                _tenant_tenant_component__WEBPACK_IMPORTED_MODULE_7__["TenantComponent"],
-                _tenant_list_tenant_list_component__WEBPACK_IMPORTED_MODULE_8__["TenantListComponent"]
+                _app_component__WEBPACK_IMPORTED_MODULE_7__["AppComponent"],
+                _tenant_tenant_component__WEBPACK_IMPORTED_MODULE_8__["TenantComponent"],
+                _tenant_list_tenant_list_component__WEBPACK_IMPORTED_MODULE_9__["TenantListComponent"],
+                _add_tenant_add_tenant_component__WEBPACK_IMPORTED_MODULE_10__["AddTenantComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
@@ -139,9 +257,10 @@ var AppModule = /** @class */ (function () {
                 _angular_material__WEBPACK_IMPORTED_MODULE_5__["MatSidenavModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_5__["MatListModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_5__["MatIconModule"],
+                mat_progress_buttons__WEBPACK_IMPORTED_MODULE_6__["MatProgressButtonsModule"]
             ],
             providers: [],
-            bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_6__["AppComponent"]]
+            bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_7__["AppComponent"]]
         })
     ], AppModule);
     return AppModule;
@@ -169,7 +288,7 @@ module.exports = "/* mat-form-field { width: 100%; }\r\n.row:first-child { margi
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ul class=\"nav\">\n    <li *ngFor=\"let tenant of tenants$ | async\" class=\"nav-item\" [class.active]=\"activetenant?.id == tenant.id\">\n        <a class=\"nav-link\" (click)=\"setCurrent(tenant)\">\n            <i class=\"material-icons\">home</i>\n            <p>{{tenant.domain}}</p>\n        </a>\n    </li>\n</ul>"
+module.exports = "<ul class=\"nav\">\n    <li class=\"nav-item\">\n        <a class=\"nav-link\" (click)=\"setCurrent(null)\">\n            <i class=\"material-icons\">add</i>\n            <p>Add Tenant</p>\n        </a>\n    </li>\n    <li *ngFor=\"let tenant of tenants$ | async\" class=\"nav-item\"\n        [class.active]=\"(activetenant$ | async)?.id == tenant.id\">\n        <a class=\"nav-link\" (click)=\"setCurrent(tenant)\">\n            <i class=\"material-icons\">home</i>\n            <p>{{tenant.domain}}</p>\n        </a>\n    </li>\n</ul>"
 
 /***/ }),
 
@@ -184,8 +303,7 @@ module.exports = "<ul class=\"nav\">\n    <li *ngFor=\"let tenant of tenants$ | 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TenantListComponent", function() { return TenantListComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
-/* harmony import */ var _tenant_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../tenant.service */ "./src/app/tenant.service.ts");
+/* harmony import */ var _tenant_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../tenant.service */ "./src/app/tenant.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -197,27 +315,21 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 };
 
 
-
 var TenantListComponent = /** @class */ (function () {
-    // public form: FormGroup;
-    function TenantListComponent(tenantservice, fb) {
+    function TenantListComponent(tenantservice) {
         this.tenantservice = tenantservice;
-        this.fb = fb;
-        // this.form = fb.group({
-        //     name: ['', Validators.required],
-        //     domain: ['', Validators.required]
-        // });
     }
     TenantListComponent.prototype.ngOnInit = function () {
         this.tenants$ = this.tenantservice.tenants;
-    };
-    TenantListComponent.prototype.create = function () {
-        // let value = this.form.value;
-        // this.tenantservice.create(value.name, value.domain);
+        this.activetenant$ = this.tenantservice.tenant;
     };
     TenantListComponent.prototype.setCurrent = function (tenant) {
+        if (tenant === null) {
+            tenant = new _tenant_service__WEBPACK_IMPORTED_MODULE_1__["Tenant"]();
+            tenant.id = 0;
+        }
         this.tenantservice.setCurrent(tenant);
-        this.activetenant = tenant;
+        // this.activetenant = tenant;
     };
     TenantListComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -225,7 +337,7 @@ var TenantListComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./tenant-list.component.html */ "./src/app/tenant-list/tenant-list.component.html"),
             styles: [__webpack_require__(/*! ./tenant-list.component.css */ "./src/app/tenant-list/tenant-list.component.css")]
         }),
-        __metadata("design:paramtypes", [_tenant_service__WEBPACK_IMPORTED_MODULE_2__["TenantService"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormBuilder"]])
+        __metadata("design:paramtypes", [_tenant_service__WEBPACK_IMPORTED_MODULE_1__["TenantService"]])
     ], TenantListComponent);
     return TenantListComponent;
 }());
@@ -272,23 +384,30 @@ var TenantService = /** @class */ (function () {
         this.http = http;
         this.tenants = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
         this.tenant = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        this.created = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        this.cache = [];
         http.get("/tenant/").subscribe(function (data) {
-            _this.tenants.next(data["items"]);
+            _this.cache = data["items"];
+            _this.tenants.next(_this.cache);
         });
     }
-    TenantService.prototype.create = function (name, domain) {
+    TenantService.prototype.create = function (domain) {
         var _this = this;
         var url = '/tenant/';
         var options = {
             body: {
-                name: name,
                 domain: domain,
             },
             withCredentials: true
         };
         this.http.post(url, options)
             .subscribe(function (data) {
-            _this.tenants.next(data["items"]);
+            var tenant = data;
+            if (tenant.tenant_created) {
+                _this.cache.push(tenant);
+            }
+            _this.tenants.next(_this.cache);
+            _this.created.next(tenant);
         });
     };
     TenantService.prototype.setCurrent = function (tenant) {
@@ -325,7 +444,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"tenant\">\n    <nav class=\"navbar navbar-expand-lg navbar-transparent  navbar-absolute fixed-top\">\n        <div class=\"container-fluid\">\n            <div class=\"navbar-wrapper\">\n                <a class=\"navbar-brand\" href=\"http://{{tenant.domain}}\" rel=\"noopener noreferrer\"\n                    target=\"_blank\">{{tenant.domain}}</a>\n                <a mat-raised-button class=\"btn btn-danger pull-right\" href=\"http://{{tenant.domain}}/admin\"\n                    rel=\"noopener noreferrer\" target=\"_blank\">Admin Site</a>\n            </div>\n        </div>\n    </nav>\n\n    <div class=\"main-content\">\n        <div class=\"container-fluid\">\n            <div class=\"row\">\n                <div class=\"col-lg-4 col-md-6 col-sm-6\">\n                    <div class=\"card card-stats\">\n                        <div class=\"card-header card-header-warning card-header-icon\">\n                            <div class=\"card-icon\">\n                                <i class=\"material-icons\">content_copy</i>\n                            </div>\n                            <p class=\"card-category\">Used Space</p>\n                            <h3 class=\"card-title\">49/50\n                                <small>GB</small>\n                            </h3>\n                        </div>\n                        <div class=\"card-footer\">\n                            <div class=\"stats\">\n                                <i class=\"material-icons text-danger\">warning</i>\n                                <a href=\"javascript:void(0)\">Get More Space...</a>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"col-lg-4 col-md-6 col-sm-6\">\n                    <div class=\"card card-stats\">\n                        <div class=\"card-header card-header-success card-header-icon\">\n                            <div class=\"card-icon\">\n                                <i class=\"material-icons\">person</i>\n                            </div>\n                            <p class=\"card-category\">Users</p>\n                            <h3 class=\"card-title\">{{tenant.user_count}}</h3>\n                            <div class=\"card-body table-responsive\">\n                                <table class=\"table table-hover\">\n                                    <thead class=\"text-warning\">\n                                        <th>Name</th>\n                                        <th>Email</th>\n                                    </thead>\n                                    <tbody>\n                                        <tr *ngFor=\"let manager of tenant.managers\">\n                                            <td>{{manager.fields.username}}</td>\n                                            <td><a href=\"mailto:{{manager.fields.email}}\">{{manager.fields.email}}</a>\n                                            </td>\n                                        </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                        <div class=\"card-footer\">\n                            <div class=\"stats\">\n                                <i class=\"material-icons\">person</i> {{tenant.user_count}} total users\n                            </div>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"col-lg-4 col-md-6 col-sm-6\">\n                    <div class=\"card card-stats\">\n                        <div class=\"card-header card-header-danger card-header-icon\">\n                            <div class=\"card-icon\">\n                                <i class=\"material-icons\">photo_library</i>\n                            </div>\n                            <p class=\"card-category\">Content</p>\n                            <h3 class=\"card-title\">75</h3>\n                            <div class=\"card-body table-responsive\">\n                                <table class=\"table table-hover\">\n                                    <thead class=\"text-warning\">\n                                        <th>Type</th>\n                                        <th>Count</th>\n                                    </thead>\n                                    <tbody>\n                                        <tr>\n                                            <td>Image</td>\n                                            <td>{{tenant.image_count}}</td>\n                                        </tr>\n                                        <tr>\n                                            <td>Video</td>\n                                            <td>{{tenant.video_count}}</td>\n                                        </tr>\n                                        <tr>\n                                            <td>Marmoset</td>\n                                            <td>0</td>\n                                        </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                        <div class=\"card-footer\">\n                            <div class=\"stats\">\n                                <i class=\"material-icons\">access_time</i> Last upload: {{tenant.image.create | date}}\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"col-md-12\">\n                    <div class=\"card card-chart\">\n                        <div class=\"card-header card-header-success\">\n                            <div class=\"ct-chart\" id=\"dailySalesChart\"></div>\n                        </div>\n                        <div class=\"card-body\">\n                            <h4 class=\"card-title\">Daily Uploads</h4>\n                        </div>\n                        <div class=\"card-footer\">\n                            <div class=\"stats\">\n                                <i class=\"material-icons\">access_time</i> updated 4 minutes ago\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n\n<!-- <mat-card >\n    <mat-card-header>\n        <div mat-card-avatar>\n            <img *ngIf=\"tenant.site_config\"\n                src=\"http://{{tenant.domain}}/{{tenant.site_config.favicon}}?v=${new Date().getTime()}\" />\n        </div>\n        <mat-card-title><a href=\"http://{{tenant.domain}}\" rel=\"noopener noreferrer\"\n                target=\"_blank\">{{tenant.domain}}</a></mat-card-subtitle>\n    </mat-card-header>\n    <img mat-card-image *ngIf=\"tenant.image\" src=\"http://{{tenant.domain}}/{{tenant.image.thumbnail}}\">\n    <mat-card-content>\n        <mat-list>\n            <mat-list-item> <small>Created: {{tenant.created | date}} </small></mat-list-item>\n            <mat-list-item> <small>Image Count: {{tenant.image_count}} </small></mat-list-item>\n            <mat-list-item> <small>Video Count: {{tenant.video_count}} </small></mat-list-item>\n        </mat-list>\n    </mat-card-content>\n</mat-card> -->"
+module.exports = "<nav class=\"navbar navbar-expand-lg navbar-transparent  navbar-absolute fixed-top\">\n    <div class=\"container-fluid\">\n        <div class=\"navbar-wrapper\">\n            <a class=\"navbar-brand\" href=\"http://{{tenant.domain}}\" rel=\"noopener noreferrer\"\n                target=\"_blank\">{{tenant.domain}}</a>\n            <a mat-raised-button class=\"btn btn-danger pull-right\" href=\"http://{{tenant.domain}}/admin\"\n                rel=\"noopener noreferrer\" target=\"_blank\">Admin Site</a>\n        </div>\n    </div>\n</nav>\n\n<div class=\"main-content\">\n    <div class=\"container-fluid\">\n        <div class=\"row\">\n            <div class=\"col-lg-4 col-md-6 col-sm-6\">\n                <div class=\"card card-stats\">\n                    <div class=\"card-header card-header-warning card-header-icon\">\n                        <div class=\"card-icon\">\n                            <i class=\"material-icons\">content_copy</i>\n                        </div>\n                        <p class=\"card-category\">Used Space</p>\n                        <h3 class=\"card-title\">49/50\n                            <small>GB</small>\n                        </h3>\n                    </div>\n                    <div class=\"card-footer\">\n                        <div class=\"stats\">\n                            <i class=\"material-icons text-danger\">warning</i>\n                            <a href=\"javascript:void(0)\">Get More Space...</a>\n                        </div>\n                    </div>\n                </div>\n            </div>\n            <div class=\"col-lg-4 col-md-6 col-sm-6\">\n                <div class=\"card card-stats\">\n                    <div class=\"card-header card-header-success card-header-icon\">\n                        <div class=\"card-icon\">\n                            <i class=\"material-icons\">person</i>\n                        </div>\n                        <p class=\"card-category\">Users</p>\n                        <h3 class=\"card-title\">{{tenant.user_count}}</h3>\n                        <div class=\"card-body table-responsive\">\n                            <table class=\"table table-hover\">\n                                <thead class=\"text-warning\">\n                                    <th>Name</th>\n                                    <th>Email</th>\n                                </thead>\n                                <tbody>\n                                    <tr *ngFor=\"let manager of tenant.managers\">\n                                        <td>{{manager.fields.username}}</td>\n                                        <td><a href=\"mailto:{{manager.fields.email}}\">{{manager.fields.email}}</a>\n                                        </td>\n                                    </tr>\n                                </tbody>\n                            </table>\n                        </div>\n                    </div>\n                    <div class=\"card-footer\">\n                        <div class=\"stats\">\n                            <i class=\"material-icons\">person</i> {{tenant.user_count}} total users\n                        </div>\n                    </div>\n                </div>\n            </div>\n            <div class=\"col-lg-4 col-md-6 col-sm-6\">\n                <div class=\"card card-stats\">\n                    <div class=\"card-header card-header-danger card-header-icon\">\n                        <div class=\"card-icon\">\n                            <i class=\"material-icons\">photo_library</i>\n                        </div>\n                        <p class=\"card-category\">Content</p>\n                        <h3 class=\"card-title\">{{tenant.image_count + tenant.video_count}}</h3>\n                        <div class=\"card-body table-responsive\">\n                            <table class=\"table table-hover\">\n                                <thead class=\"text-warning\">\n                                    <th>Type</th>\n                                    <th>Count</th>\n                                </thead>\n                                <tbody>\n                                    <tr>\n                                        <td>Image</td>\n                                        <td>{{tenant.image_count}}</td>\n                                    </tr>\n                                    <tr>\n                                        <td>Video</td>\n                                        <td>{{tenant.video_count}}</td>\n                                    </tr>\n                                    <tr>\n                                        <td>Marmoset</td>\n                                        <td>0</td>\n                                    </tr>\n                                </tbody>\n                            </table>\n                        </div>\n                    </div>\n                    <div class=\"card-footer\">\n                        <div class=\"stats\">\n                            <i class=\"material-icons\">access_time</i> Last upload:\n                            {{tenant.image?.created | date}}\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <div class=\"row\">\n            <div class=\"col-md-12\">\n                <div class=\"card card-chart\">\n                    <div class=\"card-header card-header-success\">\n                        <div class=\"ct-chart\" id=\"dailySalesChart\"></div>\n                    </div>\n                    <div class=\"card-body\">\n                        <h4 class=\"card-title\">Daily Uploads</h4>\n                    </div>\n                    <div class=\"card-footer\">\n                        <div class=\"stats\">\n                            <i class=\"material-icons\">access_time</i> updated 4 minutes ago\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -373,7 +492,7 @@ var TenantComponent = /** @class */ (function () {
     };
     TenantComponent.prototype.renderChart = function () {
         var dataDailySalesChart = {
-            labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+            labels: ['', '', '', '', '', '', ''],
             series: [
                 this.tenant.history
             ]
@@ -388,6 +507,10 @@ var TenantComponent = /** @class */ (function () {
         };
         new chartist__WEBPACK_IMPORTED_MODULE_1__["Line"]('#dailySalesChart', dataDailySalesChart, optionsDailySalesChart);
     };
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", _tenant_service__WEBPACK_IMPORTED_MODULE_2__["Tenant"])
+    ], TenantComponent.prototype, "tenant", void 0);
     TenantComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'tenant',

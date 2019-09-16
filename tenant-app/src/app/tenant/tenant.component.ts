@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 import * as Chartist from 'chartist';
@@ -11,7 +11,8 @@ import { Tenant, TenantService } from '../tenant.service';
     styleUrls: ['./tenant.component.css']
 })
 export class TenantComponent implements OnInit, OnDestroy {
-    public tenant: Tenant;
+    @Input() tenant: Tenant;
+
     private subs: Subscription[];
 
     constructor(private tenantservice: TenantService) {
@@ -33,7 +34,7 @@ export class TenantComponent implements OnInit, OnDestroy {
 
     renderChart() {
         const dataDailySalesChart: any = {
-            labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+            labels: ['', '', '', '', '', '', ''],
             series: [
                 this.tenant.history
             ]

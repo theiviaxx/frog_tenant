@@ -10,6 +10,9 @@
         </div>
     </div>
     <div class="main-panel">
-        <tenant></tenant>
+        <div *ngIf="tenant$ | async as tenant">
+            <add-tenant *ngIf="tenant.id === 0"></add-tenant>
+            <tenant *ngIf="tenant.id !== 0" [tenant]="tenant"></tenant>
+        </div>
     </div>
 </div>

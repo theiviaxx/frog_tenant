@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 export class Tenant {
     id: number;
     name: string;
+    domain: string;
     created: Date;
     image: any;
     image_count: number;
@@ -12,6 +13,7 @@ export class Tenant {
     storage: number;
     site_config: any;
     history: number[];
+    tenant_created: boolean;
 }
 
 
@@ -21,21 +23,26 @@ export class Tenant {
 export class TenantService {
     public tenants: Subject<Tenant[]>;
     public tenant: Subject<Tenant>;
+    public created: Subject<Tenant>;
+
+    private cache: Tenant[];
 
     constructor(private http: HttpClient) {
         this.tenants = new Subject<Tenant[]>();
         this.tenant = new Subject<Tenant>();
+        this.created = new Subject<Tenant>();
+        this.cache = [];
 
         http.get("/tenant/").subscribe(data => {
-            this.tenants.next(data["items"] as Tenant[]);
+            this.cache = data["items"] as Tenant[];
+            this.tenants.next(this.cache);
         });
     }
 
-    create(name: string, domain: string) {
+    create(domain: string) {
         let url = '/tenant/';
         let options = {
             body: {
-                name: name,
                 domain: domain,
             },
             withCredentials: true
@@ -43,7 +50,13 @@ export class TenantService {
 
         this.http.post(url, options)
             .subscribe(data => {
-                this.tenants.next(data["items"] as Tenant[]);
+                let tenant = data as Tenant;
+                if (tenant.tenant_created) {
+                    this.cache.push(tenant);
+                }
+
+                this.tenants.next(this.cache);
+                this.created.next(tenant);
             });
     }
 

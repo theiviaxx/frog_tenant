@@ -1,6 +1,8 @@
 import json
 import datetime
+import re
 
+from django.core.management import call_command
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.core import serializers
@@ -36,7 +38,7 @@ def get(request):
     for client in Client.objects.exclude(schema_name="public"):
         with tenant_context(client):
             image = Image.objects.first()
-            siteconfig = SiteConfig.objects.first()
+            siteconfig = None# SiteConfig.objects.first(){}
 
             numdays = 7
             today = datetime.datetime.today()
@@ -49,7 +51,6 @@ def get(request):
                     if obj['day'].day == _.day:
                         hist[i] = obj['dcount']
 
-
             res["items"].append({
                 'id': client.id,
                 'name': client.schema_name,
@@ -59,7 +60,7 @@ def get(request):
                 'image_count': Image.objects.all().count(),
                 'video_count': Video.objects.all().count(),
                 'site_config': siteconfig.json() if siteconfig else None,
-                'managers': json.loads(serializers.serialize("json", Group.objects.get(name="managers").user_set.all())),
+                'managers': [],#json.loads(serializers.serialize("json", Group.objects.get(name="managers").user_set.all())),
                 'user_count': User.objects.all().count(),
                 'history': hist
             })
@@ -69,13 +70,16 @@ def get(request):
 
 def post(request):
     data = json.loads(request.body)["body"]
+    name = data["domain"].replace(".", "_").replace("-", "_")
+    created = False
 
-    client = Client.objects.filter(schema_name=data["name"])
+    client = Client.objects.filter(schema_name=name)
     if client:
         client = client[0]
     else:
-        client = Client(schema_name=data["name"], name=data["name"])
+        client = Client(schema_name=name, name=name)
         client.save()
+        created = True
 
     if not client.domains.all():
         domain = Domain()
@@ -85,35 +89,26 @@ def post(request):
         domain.save()
 
     with tenant_context(client):
-        # Create superuser
-        user = User.objects.filter(username="admin", is_staff=True, is_superuser=True)
-        if not user:
-            user = User(username="admin", is_staff=True, is_superuser=True)
-            user.set_password("admin")
-            user.save()
-        # Create site
-        site = Site.objects.filter(domain=data["domain"], name=data["name"])
-        if not site:
-            Site(domain=data["domain"], name=data["name"]).save()
+        if created:
+            # Create superuser
+            call_command("createsuperuser", username="admin", email="admin@{}".format(data["domain"]), interactive=False)
 
-        # Create gallery
-        gallery = Gallery.objects.all()
-        if not gallery:
-            Gallery(title="main").save()
-
-        siteconfig = SiteConfig.objects.all()
-        if not siteconfig:
-            SiteConfig(name=data["name"]).save()
+            # Run Fixtures
+            call_command("loaddata", "initial_data.json", app="frog")
     
-    res = {
-        "items": []
-    }
-    for client in Client.objects.all():
-        res["items"].append({
+        res = {
             'id': client.id,
             'name': client.schema_name,
             'created': client.created_on.isoformat(),
-            'domain': client.domains.first().domain
-        })
+            'domain': client.domains.first().domain,
+            'image': None,
+            'image_count': Image.objects.all().count(),
+            'video_count': Video.objects.all().count(),
+            'site_config': None,
+            'managers': [],
+            'user_count': User.objects.all().count(),
+            'history': [],
+            'tenant_created': created
+        }
     
     return JsonResponse(res)
