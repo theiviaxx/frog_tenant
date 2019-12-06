@@ -1,6 +1,9 @@
+import os
 import json
 import datetime
+import math
 import re
+import pathlib
 
 from django.core.management import call_command
 from django.http import HttpResponse, JsonResponse
@@ -16,6 +19,7 @@ from django_tenants.utils import tenant_context
 
 from frog_tenant.models import Client, Domain
 from frog.models import Gallery, Image, Video, SiteConfig
+from frog import getRoot
 
 
 class HomePageView(TemplateView):
@@ -38,7 +42,7 @@ def get(request):
     for client in Client.objects.exclude(schema_name="public"):
         with tenant_context(client):
             image = Image.objects.first()
-            siteconfig = None# SiteConfig.objects.first(){}
+            siteconfig = SiteConfig.objects.first()
 
             numdays = 7
             today = datetime.datetime.today()
@@ -51,19 +55,20 @@ def get(request):
                     if obj['day'].day == _.day:
                         hist[i] = obj['dcount']
 
-            res["items"].append({
-                'id': client.id,
-                'name': client.schema_name,
-                'created': client.created_on.isoformat(),
-                'domain': client.domains.first().domain,
-                'image': image.json() if image else None,
-                'image_count': Image.objects.all().count(),
-                'video_count': Video.objects.all().count(),
-                'site_config': siteconfig.json() if siteconfig else None,
-                'managers': [],#json.loads(serializers.serialize("json", Group.objects.get(name="managers").user_set.all())),
-                'user_count': User.objects.all().count(),
-                'history': hist
-            })
+            item = client.toJson()
+            item['image'] = image.json() if image else None
+            item['image_count'] = Image.objects.all().count()
+            item['video_count'] = Video.objects.all().count()
+            item['site_config'] = siteconfig.json() if siteconfig else None
+            try:
+                item['managers'] = json.loads(serializers.serialize("json", Group.objects.get(name="managers").user_set.all()))
+            except:
+                item['managers'] = []
+            item['user_count'] = User.objects.all().count()
+            item['history'] = hist
+            item['space_used'] = math.ceil(getFolderSize(getRoot())/float(1<<27))
+
+            res["items"].append(item)
     
     return JsonResponse(res)
 
@@ -71,17 +76,18 @@ def get(request):
 def post(request):
     data = json.loads(request.body)["body"]
     name = data["domain"].replace(".", "_").replace("-", "_")
+    quota = data["quota"]
     created = False
 
     client = Client.objects.filter(schema_name=name)
     if client:
         client = client[0]
     else:
-        client = Client(schema_name=name, name=name)
+        client = Client(schema_name=name, name=name, space_quota=quota)
         client.save()
         created = True
 
-    if not client.domains.all():
+    if not client.domains.count():
         domain = Domain()
         domain.domain = data["domain"]
         domain.tenant = client
@@ -95,20 +101,34 @@ def post(request):
 
             # Run Fixtures
             call_command("loaddata", "initial_data.json", app="frog")
-    
-        res = {
-            'id': client.id,
-            'name': client.schema_name,
-            'created': client.created_on.isoformat(),
-            'domain': client.domains.first().domain,
-            'image': None,
-            'image_count': Image.objects.all().count(),
-            'video_count': Video.objects.all().count(),
-            'site_config': None,
-            'managers': [],
-            'user_count': User.objects.all().count(),
-            'history': [],
-            'tenant_created': created
-        }
+
+        item = client.toJson()
+        item['image'] = None
+        item['image_count'] = Image.objects.all().count()
+        item['video_count'] = Video.objects.all().count()
+        item['site_config'] = None
+        item['managers'] = []
+        item['user_count'] = User.objects.all().count()
+        item['history'] = []
+        item['space_used'] = math.ceil(getFolderSize(getRoot()) / float(1 << 27))
+        item['tenant_created'] = created
+
+        staticroot = pathlib.Path(getRoot())
+        if not staticroot.exists():
+            staticroot.mkdir(parents=True)
+
+        res = item
     
     return JsonResponse(res)
+
+
+def getFolderSize(path):
+    total = 0
+    if os.path.exists(path):
+        for entry in os.scandir(path):
+            if entry.is_file():
+                total += entry.stat().st_size
+            elif entry.is_dir():
+                total += getFolderSize(entry.path)
+
+    return total

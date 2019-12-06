@@ -6,6 +6,7 @@ import { filter, map } from 'rxjs/operators';
 import { MatProgressButtonOptions } from 'mat-progress-buttons';
 
 import { TenantService } from '../tenant.service';
+import { NbDialogRef } from '@nebular/theme';
 
 @Component({
     selector: 'add-tenant',
@@ -29,11 +30,15 @@ export class AddTenantComponent implements OnInit, OnDestroy {
 
     private subs: Subscription[];
 
-    constructor(private tenantservice: TenantService, private fb: FormBuilder) {
+    constructor(
+        private tenantservice: TenantService,
+        protected ref: NbDialogRef<AddTenantComponent>,
+        private fb: FormBuilder
+    ) {
         this.subs = [];
         this.form = fb.group({
-            name: ['', Validators.required],
-            domain: ['', Validators.required]
+            domain: ['', Validators.required],
+            space_quota: ['', Validators.required],
         });
     }
 
@@ -44,6 +49,7 @@ export class AddTenantComponent implements OnInit, OnDestroy {
             )
             .subscribe(tenant => {
                 this.options.active = false;
+                this.ref.close();
             });
         this.subs.push(sub);
     }
@@ -55,6 +61,6 @@ export class AddTenantComponent implements OnInit, OnDestroy {
     create() {
         let value = this.form.value;
         this.options.active = true;
-        this.tenantservice.create(value.domain);
+        this.tenantservice.create(value.domain, value.space_quota);
     }
 }

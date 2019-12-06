@@ -1,18 +1,13 @@
-<div class="wrapper">
-    <div class="sidebar" data-color="danger" data-background-color="white">
-        <div class="logo">
-            <a href="/" class="simple-text">
-                Frog Tenants
-            </a>
-        </div>
-        <div class="sidebar-wrapper">
-            <tenant-list></tenant-list>
-        </div>
-    </div>
-    <div class="main-panel">
+<nb-layout>
+    <nb-layout-header fixed>Frog Tenants</nb-layout-header>
+
+    <nb-sidebar>
+        <tenant-list></tenant-list>
+    </nb-sidebar>
+
+    <nb-layout-column>
         <div *ngIf="tenant$ | async as tenant">
             <add-tenant *ngIf="tenant.id === 0"></add-tenant>
             <tenant *ngIf="tenant.id !== 0" [tenant]="tenant"></tenant>
         </div>
-    </div>
-</div>
+    </nb-layout-column>

@@ -39,11 +39,12 @@ export class TenantService {
         });
     }
 
-    create(domain: string) {
+    create(domain: string, quota: number) {
         let url = '/tenant/';
         let options = {
             body: {
                 domain: domain,
+                quota: quota
             },
             withCredentials: true
         };

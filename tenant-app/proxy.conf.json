@@ -1,0 +1,22 @@
+{
+    "/frog": {
+        "target": "http://localhost:8008",
+        "secure": false
+    },
+    "/static": {
+        "target": "http://localhost:8008",
+        "secure": false
+    },
+    "/admin": {
+        "target": "http://localhost:8008",
+        "secure": false
+    },
+    "/media": {
+        "target": "http://localhost:8008",
+        "secure": false
+    },
+    "/tenant": {
+        "target": "http://localhost:8008",
+        "secure": false
+    }
+}

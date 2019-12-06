@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+
 import { Observable } from 'rxjs';
+
+
 import { Tenant, TenantService } from './tenant.service';
 
 @Component({

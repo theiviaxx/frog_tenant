@@ -1,15 +1,10 @@
-<ul class="nav">
-    <li class="nav-item">
-        <a class="nav-link" (click)="setCurrent(null)">
-            <i class="material-icons">add</i>
-            <p>Add Tenant</p>
-        </a>
-    </li>
-    <li *ngFor="let tenant of tenants$ | async" class="nav-item"
-        [class.active]="(activetenant$ | async)?.id == tenant.id">
+<nb-list>
+    <nb-list-item>
+        <a class="nav-link" (click)="addTenant()">Add Tenant</a>
+    </nb-list-item>
+    <nb-list-item *ngFor="let tenant of tenants$ | async">
         <a class="nav-link" (click)="setCurrent(tenant)">
-            <i class="material-icons">home</i>
-            <p>{{tenant.domain}}</p>
+            {{tenant.domain}}
         </a>
-    </li>
-</ul>
+    </nb-list-item>
+</nb-list>

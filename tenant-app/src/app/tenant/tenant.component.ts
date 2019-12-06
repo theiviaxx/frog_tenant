@@ -13,10 +13,12 @@ import { Tenant, TenantService } from '../tenant.service';
 export class TenantComponent implements OnInit, OnDestroy {
     @Input() tenant: Tenant;
 
+    public option: any;
     private subs: Subscription[];
 
     constructor(private tenantservice: TenantService) {
         this.subs = [];
+        this.option = {}
     }
 
     ngOnInit() {

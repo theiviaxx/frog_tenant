@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 
 import { Tenant, TenantService } from '../tenant.service';
 import { filter } from 'rxjs/operators';
+import { NbDialogService } from '@nebular/theme';
+import { AddTenantComponent } from '../add-tenant/add-tenant.component';
 
 @Component({
     selector: 'tenant-list',
@@ -15,7 +17,10 @@ export class TenantListComponent implements OnInit {
     public tenants$: Observable<Tenant[]>;
     public activetenant$: Observable<Tenant>;
 
-    constructor(private tenantservice: TenantService) {
+    constructor(
+        private tenantservice: TenantService,
+        private dialogService: NbDialogService
+    ) {
 
     }
 
@@ -31,5 +36,9 @@ export class TenantListComponent implements OnInit {
         }
         this.tenantservice.setCurrent(tenant);
         // this.activetenant = tenant;
+    }
+
+    addTenant() {
+        this.dialogService.open(AddTenantComponent, {});
     }
 }

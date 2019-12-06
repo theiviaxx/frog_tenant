@@ -1,46 +1,71 @@
-<nav class="navbar navbar-expand-lg navbar-transparent  navbar-absolute fixed-top">
-    <div class="container-fluid">
-        <div class="navbar-wrapper">
-            <a class="navbar-brand" href="http://{{tenant.domain}}" rel="noopener noreferrer"
-                target="_blank">{{tenant.domain}}</a>
-            <a mat-raised-button class="btn btn-danger pull-right" href="http://{{tenant.domain}}/admin"
-                rel="noopener noreferrer" target="_blank">Admin Site</a>
-        </div>
+<nb-card>
+    <nb-card-body>
+        <nb-actions size="small">
+            <nb-action>
+                <a href="http://{{tenant.domain}}" rel="noopener noreferrer" target="_blank">{{tenant.domain}}</a>
+            </nb-action>
+            <nb-action>
+                <a href="http://{{tenant.domain}}/admin" rel="noopener noreferrer" target="_blank">Admin Site</a>
+            </nb-action>
+        </nb-actions>
+    </nb-card-body>
+</nb-card>
+<div class="card-row">
+    <div class="card-col">
+        <nb-card size="small" accent="danger">
+            <nb-card-header>Daily Uploads</nb-card-header>
+            <nb-card-body>
+                <div class="ct-chart" id="dailySalesChart"></div>
+            </nb-card-body>
+        </nb-card>
     </div>
-</nav>
-
-<div class="main-content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <div class="card card-stats">
-                    <div class="card-header card-header-warning card-header-icon">
-                        <div class="card-icon">
-                            <i class="material-icons">content_copy</i>
-                        </div>
-                        <p class="card-category">Used Space</p>
-                        <h3 class="card-title">49/50
-                            <small>GB</small>
-                        </h3>
-                    </div>
-                    <div class="card-footer">
-                        <div class="stats">
-                            <i class="material-icons text-danger">warning</i>
-                            <a href="javascript:void(0)">Get More Space...</a>
-                        </div>
-                    </div>
+</div>
+<div class="card-row">
+    <div class="card-col">
+        <nb-card size="tiny" accent="info">
+            <nb-card-header>Space Usage</nb-card-header>
+            <nb-card-body>
+                <h3 class="card-title">{{tenant.space_used}}/{{tenant.space_quota}}
+                    <small>GB</small>
+                </h3>
+            </nb-card-body>
+        </nb-card>
+        <nb-card size="tiny" accent="success">
+            <nb-card-header>Content</nb-card-header>
+            <nb-card-body>
+                <div class="card-body table-responsive">
+                    <table class="table">
+                        <thead class="text-warning">
+                            <th>Type</th>
+                            <th>Count</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Image</td>
+                                <td>{{tenant.image_count}}</td>
+                            </tr>
+                            <tr>
+                                <td>Video</td>
+                                <td>{{tenant.video_count}}</td>
+                            </tr>
+                            <tr>
+                                <td>Marmoset</td>
+                                <td>0</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <div class="card card-stats">
-                    <div class="card-header card-header-success card-header-icon">
-                        <div class="card-icon">
-                            <i class="material-icons">person</i>
-                        </div>
-                        <p class="card-category">Users</p>
-                        <h3 class="card-title">{{tenant.user_count}}</h3>
-                        <div class="card-body table-responsive">
-                            <table class="table table-hover">
+            </nb-card-body>
+        </nb-card>
+    </div>
+    <div class="card-col">
+        <nb-card accent="primary">
+            <nb-card-body>
+
+                <nb-tabset fullWidth>
+                    <nb-tab tabTitle="Managers">
+                        <div class="table-responsive">
+                            <table class="table">
                                 <thead class="text-warning">
                                     <th>Name</th>
                                     <th>Email</th>
@@ -54,70 +79,12 @@
                                 </tbody>
                             </table>
                         </div>
-                    </div>
-                    <div class="card-footer">
-                        <div class="stats">
-                            <i class="material-icons">person</i> {{tenant.user_count}} total users
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <div class="card card-stats">
-                    <div class="card-header card-header-danger card-header-icon">
-                        <div class="card-icon">
-                            <i class="material-icons">photo_library</i>
-                        </div>
-                        <p class="card-category">Content</p>
-                        <h3 class="card-title">{{tenant.image_count + tenant.video_count}}</h3>
-                        <div class="card-body table-responsive">
-                            <table class="table table-hover">
-                                <thead class="text-warning">
-                                    <th>Type</th>
-                                    <th>Count</th>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Image</td>
-                                        <td>{{tenant.image_count}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Video</td>
-                                        <td>{{tenant.video_count}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Marmoset</td>
-                                        <td>0</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <div class="stats">
-                            <i class="material-icons">access_time</i> Last upload:
-                            {{tenant.image?.created | date}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card card-chart">
-                    <div class="card-header card-header-success">
-                        <div class="ct-chart" id="dailySalesChart"></div>
-                    </div>
-                    <div class="card-body">
-                        <h4 class="card-title">Daily Uploads</h4>
-                    </div>
-                    <div class="card-footer">
-                        <div class="stats">
-                            <i class="material-icons">access_time</i> updated 4 minutes ago
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                    </nb-tab>
+                    <nb-tab tabTitle="Users">
+                        <p>List of <strong>orders</strong>.</p>
+                    </nb-tab>
+                </nb-tabset>
+            </nb-card-body>
+        </nb-card>
     </div>
 </div>
