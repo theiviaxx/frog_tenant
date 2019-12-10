@@ -153,13 +153,13 @@ STATICFILES_DIRS = (
 
 
 AUTHENTICATION_BACKENDS = ("frog.auth.SimpleAuthBackend",)
-MEDIA_ROOT = "/Users/brett/Envs/static/"
+MEDIA_ROOT = "/Users/brett/Envs/static/tenants/"
 MEDIA_URL = "/frogstatic/"
 
 TENANT_MODEL = "frog_tenant.Client"  # app.Model
 TENANT_DOMAIN_MODEL = "frog_tenant.Domain"  # app.Model
 DEFAULT_FILE_STORAGE = "django_tenants.files.storage.TenantFileSystemStorage"
-MULTITENANT_RELATIVE_MEDIA_ROOT = MEDIA_ROOT + "tenants/"
+MULTITENANT_RELATIVE_MEDIA_ROOT = "%s"
 
 FROG_FFMPEG = "c:/bin/ffmpeg.exe"
 FROG_FFPROBE = "c:/bin/ffprobe.exe"
